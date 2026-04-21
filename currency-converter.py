@@ -1,4 +1,5 @@
 from tkinter import * 
+from tkinter import ttk
 
 class CurrencyConverter(Tk):
     def __init__(self):
@@ -50,12 +51,25 @@ class InputFrame(Frame):
         
         self.grid_propagate(False)
 
-        # self.input = Label(self, text = "Input Field", background = "gray")
-        # self.fro = Label(self, text = "FROM")
-        # self.to = Label(self, text = "TO")
-        # self.convert = Label(self, text = "convert")
+        self.amount = Entry(self, bg = "#F2EDE7", relief = FLAT, width = 30)
+        self.amount.grid(row = 0, column = 0, columnspan = 3)
+    
+        #comboboxes
+        # FROM
+        currencies = ["AED", "USD", "CAD"]
+        from_currency_cmb = ttk.Combobox(self, values = currencies, foreground = '#F2EDE7', background = '#C44010')
+        from_currency_cmb.grid(row = 1, column = 0, sticky = E)
 
-        # self.input.grid(row = 0, column = 0, columnspan = 3, sticky = EW)
+        to_currency_cmb = ttk.Combobox(self, values = currencies, foreground = '#F2EDE7', background = '#C44010')
+        to_currency_cmb.grid(row = 1, column = 2, sticky = W)
+
+        # convert button
+        convert_btn = Button(self, text = "CONVERT", foreground = '#F2EDE7', background = '#C44010', relief = FLAT)
+        convert_btn.grid(row = 2, column = 0, columnspan = 3, sticky = EW, padx = 15)
+
+        for widget in self.winfo_children():
+            widget.grid(padx = 15, pady = 5)
+
 
 if __name__ == "__main__":
     CurrencyConverter()
