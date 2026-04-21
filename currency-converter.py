@@ -33,7 +33,7 @@ class Title(Frame):
         self.rowconfigure(0, weight = 1)
         self.grid_propagate(False)
 
-        self.title = Label(self, text = "Currency Converter", font = ('Helvetica', 12), background = '#BDB6AC')
+        self.title = Label(self, text = "Currency Converter", font = ('Helvetica', 12), background = '#BDB6AC', foreground = '#0a0a0a',)
         self.title.grid(row = 0, rowspan = 2, column = 0, columnspan = 2, sticky = NSEW)
 
 class InputFrame(Frame):
