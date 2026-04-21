@@ -18,9 +18,7 @@ class CurrencyConverter(Tk):
 
 class InputFrame(Frame):
     def __init__(self, parent):
-        super().__init__(parent, background = '#F2EDE7')
-
-        
+        super().__init__(parent)
 
 if __name__ == "__main__":
     CurrencyConverter()
