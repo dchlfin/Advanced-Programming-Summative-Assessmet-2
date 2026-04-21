@@ -25,6 +25,8 @@ class CurrencyConverter(Tk):
         self.input_frame.grid(row = 1, pady = (22, 15))
         # self.input_frame = InputFrame(self)
         # self.input_frame.grid(row = 0, sticky = EW, pady = (0,5))
+        self.output_frame = OutputFrame(self, "#BDB6AC")
+        self.output_frame.grid(row = 2, pady = (0, 14))
         
         self.mainloop()
 
@@ -37,7 +39,7 @@ class Title(Frame):
         self.rowconfigure(0, weight = 1)
         self.grid_propagate(False)
 
-        self.title = Label(self, text = "Currency Converter", font = ('Helvetica', 12), background = '#BDB6AC', foreground = '#0a0a0a',)
+        self.title = Label(self, text = "Currency Converter", font = ('Helvetica', 15, 'bold'), background = '#BDB6AC', foreground = '#0a0a0a',)
         self.title.grid(row = 0, rowspan = 2, column = 0, columnspan = 2)
 
 class InputFrame(Frame):
@@ -51,16 +53,16 @@ class InputFrame(Frame):
         
         self.grid_propagate(False)
 
-        self.amount = Entry(self, bg = "#F2EDE7", relief = FLAT, width = 30)
+        self.amount = Entry(self, font = ('Helvetica', 12), bg = "#F2EDE7", relief = FLAT, width = 30)
         self.amount.grid(row = 0, column = 0, columnspan = 3)
     
         #comboboxes
         # FROM
         currencies = ["AED", "USD", "CAD"]
-        from_currency_cmb = ttk.Combobox(self, values = currencies, foreground = '#F2EDE7', background = '#C44010')
+        from_currency_cmb = ttk.Combobox(self, values = currencies, font = ('Helvetica', 12), foreground = '#F2EDE7', background = '#C44010')
         from_currency_cmb.grid(row = 1, column = 0, sticky = E)
 
-        to_currency_cmb = ttk.Combobox(self, values = currencies, foreground = '#F2EDE7', background = '#C44010')
+        to_currency_cmb = ttk.Combobox(self, values = currencies, font = ('Helvetica', 12), foreground = '#F2EDE7', background = '#C44010')
         to_currency_cmb.grid(row = 1, column = 2, sticky = W)
 
         # convert button
@@ -70,6 +72,22 @@ class InputFrame(Frame):
         for widget in self.winfo_children():
             widget.grid(padx = 15, pady = 5)
 
+class OutputFrame(Frame):
+    def __init__(self, parent, bg):
+        super().__init__(parent, height = 76, width = 200, bg = bg)
+
+        # layout configuration
+        # rows
+        self.rowconfigure(0, weight = 1)
+
+        # columns
+        for i in range(2):
+            self.columnconfigure(i, weight = 1)
+
+        self.grid_propagate(False)
+
+        converted_amount = Label(self, text = "", font = ('Helvetica', 12), foreground = '#0a0a0a', background = '#F2EDE7')
+        converted_amount.grid(row = 0, column = 0, columnspan = 2, padx = 15, pady = 5, sticky = EW)
 
 if __name__ == "__main__":
     CurrencyConverter()
