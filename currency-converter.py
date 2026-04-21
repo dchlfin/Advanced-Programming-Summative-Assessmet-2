@@ -7,8 +7,14 @@ class CurrencyConverter(Tk):
         self.geometry("300x317")
 
         # layout configuration
-        for i in range(2):
-            self.rowconfigure(i, weight = 1)
+        # rows 
+        self.rowconfigure(0, weight = 0)
+        self.rowconfigure(1, weight = 1)
+        self.rowconfigure(2, weight = 1)
+
+        # columns 
+        for i in range (2):
+            self.columnconfigure(i, weight = 1)
 
         # widgets
         self.title_label = Title(self)
