@@ -5,6 +5,7 @@ class CurrencyConverter(Tk):
         super().__init__()
         self.title("Currency Converter")
         self.geometry("300x317")
+        self.config(background = "#F2EDE7")
 
         # layout configuration
         # rows 
@@ -17,9 +18,9 @@ class CurrencyConverter(Tk):
             self.columnconfigure(i, weight = 1)
 
         # widgets
-        self.title_label = Title(self, "gray")
+        self.title_label = Title(self, "#BDB6AC")
         self.title_label.grid(row = 0, sticky = NSEW)
-        self.input_frame = InputFrame(self, "black")
+        self.input_frame = InputFrame(self, "#BDB6AC")
         self.input_frame.grid(row = 1, pady = (22, 15))
         # self.input_frame = InputFrame(self)
         # self.input_frame.grid(row = 0, sticky = EW, pady = (0,5))
@@ -35,7 +36,7 @@ class Title(Frame):
         self.rowconfigure(0, weight = 1)
         self.grid_propagate(False)
 
-        self.title = Label(self, text = "Currency Converter", font = ('Helvetica', 12), foreground = '#0a0a0a',)
+        self.title = Label(self, text = "Currency Converter", font = ('Helvetica', 12), background = '#BDB6AC', foreground = '#0a0a0a',)
         self.title.grid(row = 0, rowspan = 2, column = 0, columnspan = 2)
 
 class InputFrame(Frame):
@@ -49,12 +50,12 @@ class InputFrame(Frame):
         
         self.grid_propagate(False)
 
-        self.input = Label(self, text = "Input Field", background = "gray")
-        self.fro = Label(self, text = "FROM")
-        self.to = Label(self, text = "TO")
-        self.convert = Label(self, text = "convert")
+        # self.input = Label(self, text = "Input Field", background = "gray")
+        # self.fro = Label(self, text = "FROM")
+        # self.to = Label(self, text = "TO")
+        # self.convert = Label(self, text = "convert")
 
-        self.input.grid(row = 0, column = 0, columnspan = 3, sticky = EW)
+        # self.input.grid(row = 0, column = 0, columnspan = 3, sticky = EW)
 
 if __name__ == "__main__":
     CurrencyConverter()
