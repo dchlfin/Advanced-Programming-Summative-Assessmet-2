@@ -51,6 +51,10 @@ class InputFrame(Frame):
     def __init__(self, parent, bg, base_url, apikey):
         super().__init__(parent, height = 144, width = 200, bg = bg)
 
+        # initialize api values
+        self.base_url = base_url
+        self.apikey = apikey
+
         # layout configuration
         for i in range(3):
             self.rowconfigure(i, weight = 1)
