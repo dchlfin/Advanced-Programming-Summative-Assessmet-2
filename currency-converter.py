@@ -6,6 +6,7 @@ class CurrencyConverter(Tk):
         super().__init__()
         self.title("Currency Converter")
         self.geometry("300x317")
+        self.resizable(False, False)
         self.config(background = "#F2EDE7")
 
         # layout configuration
@@ -53,7 +54,9 @@ class InputFrame(Frame):
         
         self.grid_propagate(False)
 
-        self.amount = Entry(self, font = ('Helvetica', 12), bg = "#F2EDE7", relief = FLAT, width = 30)
+        vcmd = (self.register(self.callback))
+
+        self.amount = Entry(self, font = ('Helvetica', 12), bg = "#F2EDE7", relief = FLAT, width = 30, validate = 'all', validatecommand = (vcmd, '%P'))
         self.amount.grid(row = 0, column = 0, columnspan = 3)
     
         #comboboxes
@@ -71,6 +74,10 @@ class InputFrame(Frame):
 
         for widget in self.winfo_children():
             widget.grid(padx = 15, pady = 5)
+
+    # methods
+    def callback(self, P):
+        return str.isdigit(P) or P == ""
 
 class OutputFrame(Frame):
     def __init__(self, parent, bg):
