@@ -9,6 +9,10 @@ class CurrencyConverter(Tk):
         self.resizable(False, False)
         self.config(background = "#F2EDE7")
 
+        # api values
+        self.base_url = "https://api.freecurrency.api.com/v1/"
+        self.api_key = "fca_live_KHDZpvXggWHl70BJnGlIcmRasJRQnFstaXbqOuIy"
+
         # layout configuration
         # rows 
         self.rowconfigure(0, weight = 0)
@@ -22,7 +26,7 @@ class CurrencyConverter(Tk):
         # widgets
         self.title_label = Title(self, "#BDB6AC")
         self.title_label.grid(row = 0, sticky = NSEW)
-        self.input_frame = InputFrame(self, "#BDB6AC")
+        self.input_frame = InputFrame(self, "#BDB6AC", self.base_url, self.api_key)
         self.input_frame.grid(row = 1, pady = (22, 15))
         # self.input_frame = InputFrame(self)
         # self.input_frame.grid(row = 0, sticky = EW, pady = (0,5))
@@ -44,7 +48,7 @@ class Title(Frame):
         self.title.grid(row = 0, rowspan = 2, column = 0, columnspan = 2)
 
 class InputFrame(Frame):
-    def __init__(self, parent, bg):
+    def __init__(self, parent, bg, base_url, apikey):
         super().__init__(parent, height = 144, width = 200, bg = bg)
 
         # layout configuration
@@ -69,15 +73,23 @@ class InputFrame(Frame):
         to_currency_cmb.grid(row = 1, column = 2, sticky = W)
 
         # convert button
-        convert_btn = Button(self, text = "CONVERT", foreground = '#F2EDE7', background = '#C44010', relief = FLAT)
+        convert_btn = Button(self, text = "CONVERT", foreground = '#F2EDE7', background = '#C44010', relief = FLAT, command = self.get_amount)
         convert_btn.grid(row = 2, column = 0, columnspan = 3, sticky = EW, padx = 15)
 
         for widget in self.winfo_children():
             widget.grid(padx = 15, pady = 5)
 
     # methods
+    # validate entry input if it is a number or not
     def callback(self, P):
         return str.isdigit(P) or P == ""
+    
+    # get amount to convert
+    def get_amount(self):
+        amount = self.amount.get()
+
+        # return nothing if entry is empty, return amount otherwise
+        return None if amount == "" else amount
 
 class OutputFrame(Frame):
     def __init__(self, parent, bg):
