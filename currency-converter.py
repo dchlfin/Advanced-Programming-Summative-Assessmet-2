@@ -131,14 +131,17 @@ class InputFrame(Frame):
             else:
                 # if the api request fails
                 fallback_list = ['eur', 'usd', 'jpy', 'bgn', 'czk', 'dkk', 'gbp', 'huf', 'pln', 'ron', 'sek', 'chf', 'isk', 'nok', 'hrk', 'rub', 'try', 'aud', 'brl', 'cad', 'cny', 'hkd', 'idr', 'inr', 'krw', 'mxn', 'myr', 'nzd', 'php', 'sgd', 'thb', 'zar']
-
                 fallback_list = [c.upper() for c in fallback_list]
+
                 return fallback_list
     
     def convert_currency(self, amount):
-        amount = int(amount)
+        amount = float(amount)
 
-        url = f"{self.base_url}latest?apikey={self.api_key}&currencies={self.to_currency}&base_currency={self.from_currency}"
+        from_currency = self.from_currency.get()
+        to_currency = self.to_currency.get()
+
+        url = f"{self.base_url}latest?apikey={self.api_key}&currencies={to_currency}&base_currency={from_currency}"
         print(url)
 
         response = requests.get(url)
@@ -146,9 +149,9 @@ class InputFrame(Frame):
         if response.status_code == 200:
             data = response.json()
 
-            if "data" in data and self.to_currency in data["data"]:
-                rate = data["data"][self.to_currency]
-                converted_amount = amount * rate
+            if "data" in data and to_currency in data["data"]:
+                rate = data["data"][to_currency]
+                converted_amount = round(amount * rate, 2)
                 print(rate)
                 print(converted_amount)
             else:
