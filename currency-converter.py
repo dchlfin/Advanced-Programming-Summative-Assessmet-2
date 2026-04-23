@@ -77,10 +77,9 @@ class InputFrame(Frame):
     
         #comboboxes
         # FROM
-        currencies = ['abc', 'def', 'ghi']
+        currencies = self.supported_currencies
         from_currency_cmb = ttk.Combobox(self, values = currencies, font = ('Helvetica', 12), foreground = '#F2EDE7', background = '#C44010')
         from_currency_cmb.grid(row = 1, column = 0, sticky = E)
-
         to_currency_cmb = ttk.Combobox(self, values = currencies, font = ('Helvetica', 12), foreground = '#F2EDE7', background = '#C44010')
         to_currency_cmb.grid(row = 1, column = 2, sticky = W)
 
@@ -106,6 +105,7 @@ class InputFrame(Frame):
     def supported_currencies(self):
         # form request url
         url = f"{self.base_url}currencies?apikey={self.api_key}"
+        print(url)
 
         # assign the raw data as the api 'response'
         response = requests.get(url)
@@ -120,7 +120,7 @@ class InputFrame(Frame):
 
                 # gathers each currency keycode into a list
                 currencies_keys = list(currencies.keys())
-                print(currencies.keys)
+                return currencies_keys
             else:
                 return None
 
