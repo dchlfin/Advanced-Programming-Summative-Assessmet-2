@@ -1,5 +1,9 @@
+import os
 from tkinter import * 
 from tkinter import ttk
+
+# load apikey from .env file
+from dotenv import load_dotenv
 
 class CurrencyConverter(Tk):
     def __init__(self):
@@ -9,9 +13,11 @@ class CurrencyConverter(Tk):
         self.resizable(False, False)
         self.config(background = "#F2EDE7")
 
-        # api values
+        # api request values
         self.base_url = "https://api.freecurrency.api.com/v1/"
-        self.api_key = "fca_live_KHDZpvXggWHl70BJnGlIcmRasJRQnFstaXbqOuIy"
+        self.api_key = os.getenv("api_key")
+        
+        self.all_currencies = ['eur', 'usd', 'jpy', 'bgn', 'czk', 'dkk', 'gbp', 'huf', 'pln', 'ron', 'sek', 'chf', 'isk', 'nok', 'hrk', 'rub', 'try', 'aud', 'brl', 'cad', 'cny', 'hkd', 'idr', 'inr', 'krw', 'mxn', 'myr', 'nzd', 'php', 'sgd', 'thb', 'zar']
 
         # layout configuration
         # rows 
@@ -26,7 +32,7 @@ class CurrencyConverter(Tk):
         # widgets
         self.title_label = Title(self, "#BDB6AC")
         self.title_label.grid(row = 0, sticky = NSEW)
-        self.input_frame = InputFrame(self, "#BDB6AC", self.base_url, self.api_key)
+        self.input_frame = InputFrame(self, "#BDB6AC", self.base_url, self.api_key, self.all_currencies)
         self.input_frame.grid(row = 1, pady = (22, 15))
         # self.input_frame = InputFrame(self)
         # self.input_frame.grid(row = 0, sticky = EW, pady = (0,5))
@@ -48,12 +54,13 @@ class Title(Frame):
         self.title.grid(row = 0, rowspan = 2, column = 0, columnspan = 2)
 
 class InputFrame(Frame):
-    def __init__(self, parent, bg, base_url, apikey):
+    def __init__(self, parent, bg, base_url, api_key, all_currencies):
         super().__init__(parent, height = 144, width = 200, bg = bg)
 
         # initialize api values
         self.base_url = base_url
-        self.apikey = apikey
+        self.api_key = api_key
+        self.all_currencies = all_currencies 
 
         # layout configuration
         for i in range(3):
@@ -93,7 +100,7 @@ class InputFrame(Frame):
         amount = self.amount.get()
 
         # return nothing if entry is empty, return amount otherwise
-        return None if amount == "" else amount
+        return None if amount == "" else float(amount)
 
 class OutputFrame(Frame):
     def __init__(self, parent, bg):
@@ -113,4 +120,5 @@ class OutputFrame(Frame):
         converted_amount.grid(row = 0, column = 0, columnspan = 2, padx = 15, pady = 5, sticky = EW)
 
 if __name__ == "__main__":
+    load_dotenv()
     CurrencyConverter()
