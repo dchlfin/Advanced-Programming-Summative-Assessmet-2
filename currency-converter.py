@@ -15,7 +15,7 @@ class CurrencyConverter(Tk):
         self.config(background = "#F2EDE7")
 
         # api request values
-        self.base_url = "https://api.freecurrency.api.com/v1/"
+        self.base_url = "https://api.freecurrencyapi.com/v1/"
         self.api_key = os.getenv("api_key")
         
         self.all_currencies = ['eur', 'usd', 'jpy', 'bgn', 'czk', 'dkk', 'gbp', 'huf', 'pln', 'ron', 'sek', 'chf', 'isk', 'nok', 'hrk', 'rub', 'try', 'aud', 'brl', 'cad', 'cny', 'hkd', 'idr', 'inr', 'krw', 'mxn', 'myr', 'nzd', 'php', 'sgd', 'thb', 'zar']
@@ -61,7 +61,11 @@ class InputFrame(Frame):
         # initialize api values
         self.base_url = base_url
         self.api_key = api_key
-        self.all_currencies = all_currencies 
+        self.all_currencies = all_currencies
+
+        # string variables
+        self.from_currency = StringVar()
+        self.to_currency = StringVar() 
 
         # layout configuration
         for i in range(3):
@@ -77,10 +81,12 @@ class InputFrame(Frame):
     
         #comboboxes
         # FROM
-        currencies = self.supported_currencies
-        from_currency_cmb = ttk.Combobox(self, values = currencies, font = ('Helvetica', 12), foreground = '#F2EDE7', background = '#C44010')
+        from_currencies = self.supported_currencies()
+        to_currencies = from_currencies.copy()
+
+        from_currency_cmb = ttk.Combobox(self, values = from_currencies, font = ('Helvetica', 12), textvariable = self.from_currency)
         from_currency_cmb.grid(row = 1, column = 0, sticky = E)
-        to_currency_cmb = ttk.Combobox(self, values = currencies, font = ('Helvetica', 12), foreground = '#F2EDE7', background = '#C44010')
+        to_currency_cmb = ttk.Combobox(self, values = to_currencies, font = ('Helvetica', 12), textvariable = self.to_currency)
         to_currency_cmb.grid(row = 1, column = 2, sticky = W)
 
         # convert button
@@ -122,7 +128,11 @@ class InputFrame(Frame):
                 currencies_keys = list(currencies.keys())
                 return currencies_keys
             else:
-                return None
+                # if the api request fails
+                fallback_list = ['eur', 'usd', 'jpy', 'bgn', 'czk', 'dkk', 'gbp', 'huf', 'pln', 'ron', 'sek', 'chf', 'isk', 'nok', 'hrk', 'rub', 'try', 'aud', 'brl', 'cad', 'cny', 'hkd', 'idr', 'inr', 'krw', 'mxn', 'myr', 'nzd', 'php', 'sgd', 'thb', 'zar']
+
+                fallback_list = [c.upper() for c in fallback_list]
+                return fallback_list
 
 
 class OutputFrame(Frame):
