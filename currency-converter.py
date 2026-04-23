@@ -112,7 +112,6 @@ class InputFrame(Frame):
     def supported_currencies(self):
         # form request url
         url = f"{self.base_url}currencies?apikey={self.api_key}"
-        print(url)
 
         # assign the raw data as the api 'response'
         response = requests.get(url)
@@ -121,9 +120,11 @@ class InputFrame(Frame):
         if response.status_code == 200:
             # parse the raw data into a Python dictionary
             currencies_data = response.json()
+            self.currencies_data = currencies_data
+
             if "data" in currencies_data:
                 # access the "data" value in the dictionary
-                currencies = currencies_data["data"]
+                currencies = self.currencies_data["data"]
 
                 # gathers each currency keycode into a list
                 currencies_keys = list(currencies.keys())
@@ -152,8 +153,10 @@ class InputFrame(Frame):
             if "data" in data and to_currency in data["data"]:
                 rate = data["data"][to_currency]
                 converted_amount = round(amount * rate, 2)
-                print(rate)
                 print(converted_amount)
+                symbol = self.currencies_data["data"][to_currency]["symbol"]
+                print(symbol)
+
             else:
                 print("Currency not found in response.")
                 return None
