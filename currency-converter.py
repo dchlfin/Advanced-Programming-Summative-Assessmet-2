@@ -1,4 +1,5 @@
 import os
+import requests
 from tkinter import * 
 from tkinter import ttk
 
@@ -76,7 +77,7 @@ class InputFrame(Frame):
     
         #comboboxes
         # FROM
-        currencies = ["AED", "USD", "CAD"]
+        currencies = ['abc', 'def', 'ghi']
         from_currency_cmb = ttk.Combobox(self, values = currencies, font = ('Helvetica', 12), foreground = '#F2EDE7', background = '#C44010')
         from_currency_cmb.grid(row = 1, column = 0, sticky = E)
 
@@ -101,6 +102,28 @@ class InputFrame(Frame):
 
         # return nothing if entry is empty, return amount otherwise
         return None if amount == "" else float(amount)
+    
+    def supported_currencies(self):
+        # form request url
+        url = f"{self.base_url}currencies?apikey={self.api_key}"
+
+        # assign the raw data as the api 'response'
+        response = requests.get(url)
+
+        # if the request is succesful
+        if response.status_code == 200:
+            # parse the raw data into a Python dictionary
+            currencies_data = response.json()
+            if "data" in currencies_data:
+                # access the "data" value in the dictionary
+                currencies = currencies_data["data"]
+
+                # gathers each currency keycode into a list
+                currencies_keys = list(currencies.keys())
+                print(currencies.keys)
+            else:
+                return None
+
 
 class OutputFrame(Frame):
     def __init__(self, parent, bg):
