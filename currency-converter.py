@@ -91,6 +91,7 @@ class InputFrame(Frame):
 
         # convert button
         convert_btn = Button(self, text = "CONVERT", foreground = '#F2EDE7', background = '#C44010', relief = FLAT, command = self.get_amount)
+        # command = self.convert_currency
         convert_btn.grid(row = 2, column = 0, columnspan = 3, sticky = EW, padx = 15)
 
         for widget in self.winfo_children():
@@ -106,7 +107,7 @@ class InputFrame(Frame):
         amount = self.amount.get()
 
         # return nothing if entry is empty, return amount otherwise
-        return None if amount == "" else float(amount)
+        return None if amount == "" else self.convert_currency(amount)
     
     def supported_currencies(self):
         # form request url
@@ -133,7 +134,29 @@ class InputFrame(Frame):
 
                 fallback_list = [c.upper() for c in fallback_list]
                 return fallback_list
+    
+    def convert_currency(self, amount):
+        amount = int(amount)
 
+        url = f"{self.base_url}latest?apikey={self.api_key}&currencies={self.to_currency}&base_currency={self.from_currency}"
+        print(url)
+
+        response = requests.get(url)
+
+        if response.status_code == 200:
+            data = response.json()
+
+            if "data" in data and self.to_currency in data["data"]:
+                rate = data["data"][self.to_currency]
+                converted_amount = amount * rate
+                print(rate)
+                print(converted_amount)
+            else:
+                print("Currency not found in response.")
+                return None
+        else:
+            print("API request failed")
+            return None
 
 class OutputFrame(Frame):
     def __init__(self, parent, bg):
