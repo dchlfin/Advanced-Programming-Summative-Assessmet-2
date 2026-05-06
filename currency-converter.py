@@ -112,7 +112,6 @@ class InputFrame(Frame):
     def supported_currencies(self):
         # form request url
         url = f"{self.base_url}currencies?apikey={self.api_key}"
-        print(url)
 
         # assign the raw data as the api 'response'
         response = requests.get(url)
@@ -128,20 +127,17 @@ class InputFrame(Frame):
             if "data" in currencies_data:
                 # access the "data" value in the dictionary
                 self.currencies = self.currencies_data["data"]
-                # print(f"Currencies = {currencies}")
 
                 # gathers each currency keycode into a list
                 currencies_keys = list(self.currencies.keys())
 
                 currencies_eu = ['EUR', 'BGN', 'CZK', 'DKK', 'HUF', 'PLN', 'RON', 'SEK']
-
                 for i in currencies_keys:
                     if i in currencies_eu:
                         self.currencies[i].update({'EU': True})
                     else:
                         self.currencies[i].update({'EU': False})
 
-                # print(currencies)
                 return currencies_keys
             else:
                 # if the api request fails
@@ -157,7 +153,6 @@ class InputFrame(Frame):
         to_currency = self.to_currency.get()
 
         url = f"{self.base_url}latest?apikey={self.api_key}&currencies={to_currency}&base_currency={from_currency}"
-        print(url)
 
         response = requests.get(url)
 
@@ -167,7 +162,6 @@ class InputFrame(Frame):
             if "data" in data and to_currency in data["data"]:
                 rate = data["data"][to_currency]
                 self.converted_amount = round(amount * rate, 2)
-                # print(converted_amount)
                 self.symbol = self.currencies_data["data"][to_currency]["symbol"]
                 self.eu = self.currencies[to_currency]["EU"]
                 self.master.output_frame.output_display(self.converted_amount, self.symbol, self.eu)
