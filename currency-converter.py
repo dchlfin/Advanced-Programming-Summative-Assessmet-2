@@ -37,7 +37,7 @@ class CurrencyConverter(Tk):
         self.input_frame.grid(row = 1, pady = (22, 15))
         # self.input_frame = InputFrame(self)
         # self.input_frame.grid(row = 0, sticky = EW, pady = (0,5))
-        self.output_frame = OutputFrame(self, "#BDB6AC")
+        self.output_frame = OutputFrame(self, "#DEDACF")
         self.output_frame.grid(row = 2, pady = (0, 14))
         
         self.mainloop()
@@ -74,6 +74,19 @@ class InputFrame(Frame):
         
         self.grid_propagate(False)
 
+        # combobox customization
+        combostyle = ttk.Style()
+        combostyle.theme_use('clam')
+        combostyle.configure("TCombobox",
+                             fieldbackground = '#F2EDE7',
+                             background = '#C44010',
+                             foreground = '#0a0a0a',
+                             bordercolor = '#C44010',
+                             arrowcolor = '#F2EDE7',
+                             focusfill = 'red')
+        self.option_add("*TCombobox*Listbox*Background", '#F2EDE7')
+        # self.option_add("*TCombobox*Listbox*Foreground", '#0a0a0a')
+
         vcmd = (self.register(self.callback))
 
         self.amount = Entry(self, font = ('Helvetica', 12), bg = "#F2EDE7", relief = FLAT, width = 30, validate = 'all', validatecommand = (vcmd, '%P'))
@@ -84,13 +97,13 @@ class InputFrame(Frame):
         from_currencies = self.supported_currencies()
         to_currencies = from_currencies.copy()
 
-        from_currency_cmb = ttk.Combobox(self, values = from_currencies, font = ('Helvetica', 12), textvariable = self.from_currency)
+        from_currency_cmb = ttk.Combobox(self, values = from_currencies, font = ('Helvetica', 12), textvariable = self.from_currency, state = 'readonly')
         from_currency_cmb.grid(row = 1, column = 0, sticky = E)
-        to_currency_cmb = ttk.Combobox(self, values = to_currencies, font = ('Helvetica', 12), textvariable = self.to_currency)
+        to_currency_cmb = ttk.Combobox(self, values = to_currencies, font = ('Helvetica', 12), textvariable = self.to_currency, state = 'readonly')
         to_currency_cmb.grid(row = 1, column = 2, sticky = W)
 
         # convert button
-        convert_btn = Button(self, text = "CONVERT", foreground = '#F2EDE7', background = '#C44010', relief = FLAT, command = self.get_amount)
+        convert_btn = Button(self, text = "CONVERT", foreground = '#F2EDE7', background = '#A62906', relief = FLAT, command = self.get_amount)
         # command = self.convert_currency
         convert_btn.grid(row = 2, column = 0, columnspan = 3, sticky = EW, padx = 15)
 
