@@ -121,6 +121,8 @@ class InputFrame(Frame):
         if response.status_code == 200:
             # parse the raw data into a Python dictionary
             currencies_data = response.json()
+
+            # assign the dictionary to an accessible variable
             self.currencies_data = currencies_data
 
             if "data" in currencies_data:
@@ -129,6 +131,7 @@ class InputFrame(Frame):
 
                 # gathers each currency keycode into a list
                 currencies_keys = list(currencies.keys())
+
                 return currencies_keys
             else:
                 # if the api request fails
@@ -156,6 +159,7 @@ class InputFrame(Frame):
                 self.converted_amount = round(amount * rate, 2)
                 # print(converted_amount)
                 self.symbol = self.currencies_data["data"][to_currency]["symbol"]
+
                 self.master.output_frame.output_display(self.converted_amount, self.symbol)
                 
 
