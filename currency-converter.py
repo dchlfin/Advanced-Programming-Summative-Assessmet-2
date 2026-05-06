@@ -112,6 +112,7 @@ class InputFrame(Frame):
     def supported_currencies(self):
         # form request url
         url = f"{self.base_url}currencies?apikey={self.api_key}"
+        print(url)
 
         # assign the raw data as the api 'response'
         response = requests.get(url)
@@ -152,10 +153,11 @@ class InputFrame(Frame):
 
             if "data" in data and to_currency in data["data"]:
                 rate = data["data"][to_currency]
-                converted_amount = round(amount * rate, 2)
-                print(converted_amount)
-                symbol = self.currencies_data["data"][to_currency]["symbol"]
-                print(symbol)
+                self.converted_amount = round(amount * rate, 2)
+                # print(converted_amount)
+                self.symbol = self.currencies_data["data"][to_currency]["symbol"]
+                self.master.output_frame.output_display(self.converted_amount, self.symbol)
+                
 
             else:
                 print("Currency not found in response.")
@@ -178,8 +180,14 @@ class OutputFrame(Frame):
 
         self.grid_propagate(False)
 
-        converted_amount = Label(self, text = "", font = ('Helvetica', 12), foreground = '#0a0a0a', background = '#F2EDE7')
-        converted_amount.grid(row = 0, column = 0, columnspan = 2, padx = 15, pady = 5, sticky = EW)
+        self.converted_amount = Label(self, text = "", font = ('Helvetica', 12), foreground = '#0a0a0a', background = '#F2EDE7')
+        self.converted_amount.grid(row = 0, column = 0, columnspan = 2, padx = 15, pady = 5, sticky = EW)
+    
+    def output_display(self, output, symbol):
+        output = output
+        symbol = symbol
+
+        self.converted_amount.config(text = f"{symbol}{output}")
 
 if __name__ == "__main__":
     load_dotenv()
