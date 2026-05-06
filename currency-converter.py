@@ -10,7 +10,7 @@ class CurrencyConverter(Tk):
     def __init__(self):
         super().__init__()
         self.title("Currency Converter")
-        self.geometry("300x317")
+        self.geometry("300x350")
         self.resizable(False, False)
         self.config(background = "#F2EDE7")
 
@@ -38,7 +38,11 @@ class CurrencyConverter(Tk):
         # self.input_frame = InputFrame(self)
         # self.input_frame.grid(row = 0, sticky = EW, pady = (0,5))
         self.output_frame = OutputFrame(self, "#DEDACF")
-        self.output_frame.grid(row = 2, pady = (0, 14))
+        self.output_frame.grid(row = 2, pady = (0, 4))
+
+        # set widgets behind header
+        self.input_frame.lower()
+        self.output_frame.lower()
         
         self.mainloop()
 
@@ -51,8 +55,10 @@ class Title(Frame):
         self.rowconfigure(0, weight = 1)
         self.grid_propagate(False)
 
-        self.title = Label(self, text = "CURRENCY CONVERTER", font = ('Comfortaa', 10, 'bold'), background = '#1C1C1C', foreground = '#F2EDE7',) #A62906
+        self.title_bg = PhotoImage(file = "assets/header_frame.png")
+        self.title = Label(self, text = "CURRENCY CONVERTER", image = self.title_bg, font = ('Comfortaa', 10, 'bold'), compound = 'center', background = '#1C1C1C', foreground = '#F2EDE7',) #A62906
         self.title.grid(row = 0, rowspan = 2, column = 0, columnspan = 2)
+        self.title.lift()
 
 class InputFrame(Frame):
     def __init__(self, parent, bg, base_url, api_key, all_currencies):
@@ -84,7 +90,7 @@ class InputFrame(Frame):
         self.grid_propagate(False)
 
         # input frame bg
-        self.input_bg = PhotoImage(file="assets/conversion_frame_1.png")
+        self.input_bg = PhotoImage(file="assets/conversion_frame.png")
         input_bg_label = Label(self, image = self.input_bg)
         input_bg_label.place(x = 0, y = 0, relwidth = 1, relheight = 1)
         input_bg_label.lower()
@@ -211,7 +217,7 @@ class InputFrame(Frame):
 
 class OutputFrame(Frame):
     def __init__(self, parent, bg):
-        super().__init__(parent, height = 76, width = 200, bg = bg)
+        super().__init__(parent, height = 90, width = 200, bg = bg)
 
         # layout configuration
         # rows
@@ -224,7 +230,7 @@ class OutputFrame(Frame):
         self.grid_propagate(False)
 
         # output frame
-        self.output_bg = PhotoImage(file = "assets/display_frame_2.png")
+        self.output_bg = PhotoImage(file = "assets/display_frame.png")
         output_bg_label = Label(self, image = self.output_bg)
         output_bg_label.place(x = 0, y = 0, relwidth = 1, relheight = 1)
         output_bg_label.lower()
