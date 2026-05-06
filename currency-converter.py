@@ -75,9 +75,6 @@ class InputFrame(Frame):
 
         # layout configuration
         # rows
-        # for i in range(3):
-        #     self.rowconfigure(i, weight = 1)
-        #     # self.columnconfigure(i, weight = 1)
         self.rowconfigure(0, weight = 1)
         self.rowconfigure(1, weight = 0)
         self.rowconfigure(2, weight = 1)
@@ -106,7 +103,6 @@ class InputFrame(Frame):
                              arrowcolor = '#F2EDE7',
                              focusfill = 'red')
         self.option_add("*TCombobox*Listbox*Background", '#F2EDE7')
-        # self.option_add("*TCombobox*Listbox*Foreground", '#0a0a0a')
 
         vcmd = (self.register(self.callback))
 
@@ -129,7 +125,6 @@ class InputFrame(Frame):
         to_currency_cmb.grid(row = 1, column = 2, sticky = W)
 
         # convert button
-        # convert_btn = Button(self, text = "CONVERT", foreground = '#F2EDE7', background = '#A62906', relief = FLAT, command = self.get_amount)
         self.convert_button_bg = PhotoImage(file = "assets/convert_button.png")
         convert_btn = Button(self, text = "CONVERT", image = self.convert_button_bg, foreground = '#BAB3A9', background = '#BAB3A9', relief = FLAT, command = self.get_amount)
         # command = self.convert_currency
