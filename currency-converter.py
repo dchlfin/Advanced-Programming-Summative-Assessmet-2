@@ -128,10 +128,20 @@ class InputFrame(Frame):
             if "data" in currencies_data:
                 # access the "data" value in the dictionary
                 currencies = self.currencies_data["data"]
+                # print(f"Currencies = {currencies}")
 
                 # gathers each currency keycode into a list
                 currencies_keys = list(currencies.keys())
 
+                currencies_eu = ['EUR', 'BGN', 'CZK', 'DKK', 'HUF', 'PLN', 'RON', 'SEK']
+
+                for i in currencies_keys:
+                    if i in currencies_eu:
+                        currencies[i].update({'EU': True})
+                    else:
+                        currencies[i].update({'EU': False})
+
+                # print(currencies)
                 return currencies_keys
             else:
                 # if the api request fails
