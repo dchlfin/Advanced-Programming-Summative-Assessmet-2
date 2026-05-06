@@ -74,6 +74,12 @@ class InputFrame(Frame):
         
         self.grid_propagate(False)
 
+        # input frame bg
+        self.input_bg = PhotoImage(file="assets/conversion_frame.png")
+        input_bg_label = Label(self, image = self.input_bg)
+        input_bg_label.place(x = 0, y = 0, relwidth = 1, relheight = 1)
+        input_bg_label.lower()
+
         # combobox customization
         combostyle = ttk.Style()
         combostyle.theme_use('clam')
@@ -103,12 +109,15 @@ class InputFrame(Frame):
         to_currency_cmb.grid(row = 1, column = 2, sticky = W)
 
         # convert button
-        convert_btn = Button(self, text = "CONVERT", foreground = '#F2EDE7', background = '#A62906', relief = FLAT, command = self.get_amount)
+        # convert_btn = Button(self, text = "CONVERT", foreground = '#F2EDE7', background = '#A62906', relief = FLAT, command = self.get_amount)
+        self.convert_button_bg = PhotoImage(file = "assets/convert_button.png")
+        convert_btn = Button(self, text = "CONVERT", image = self.convert_button_bg, foreground = '#BAB3A9', background = '#BAB3A9', relief = FLAT, command = self.get_amount)
         # command = self.convert_currency
         convert_btn.grid(row = 2, column = 0, columnspan = 3, sticky = EW, padx = 15)
 
         for widget in self.winfo_children():
-            widget.grid(padx = 15, pady = 5)
+            if widget != input_bg_label:
+                widget.grid(padx = 15, pady = 5)
 
     # methods
     # validate entry input if it is a number or not
@@ -199,6 +208,12 @@ class OutputFrame(Frame):
             self.columnconfigure(i, weight = 1)
 
         self.grid_propagate(False)
+
+        # output frame
+        self.output_bg = PhotoImage(file = "assets/display_frame.png")
+        output_bg_label = Label(self, image = self.output_bg)
+        output_bg_label.place(x = 0, y = 0, relwidth = 1, relheight = 1)
+        output_bg_label.lower()
 
         self.converted_amount = Label(self, text = "", font = ('Helvetica', 12), foreground = '#0a0a0a', background = '#F2EDE7')
         self.converted_amount.grid(row = 0, column = 0, columnspan = 2, padx = 15, pady = 5, sticky = EW)
