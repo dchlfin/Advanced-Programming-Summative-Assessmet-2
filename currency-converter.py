@@ -31,7 +31,7 @@ class CurrencyConverter(Tk):
             self.columnconfigure(i, weight = 1)
 
         # widgets
-        self.title_label = Title(self, "#BDB6AC")
+        self.title_label = Title(self, "#1C1C1C")
         self.title_label.grid(row = 0, sticky = NSEW)
         self.input_frame = InputFrame(self, "#BDB6AC", self.base_url, self.api_key, self.all_currencies)
         self.input_frame.grid(row = 1, pady = (22, 15))
@@ -51,12 +51,12 @@ class Title(Frame):
         self.rowconfigure(0, weight = 1)
         self.grid_propagate(False)
 
-        self.title = Label(self, text = "Currency Converter", font = ('Helvetica', 15, 'bold'), background = '#BDB6AC', foreground = '#0a0a0a',)
+        self.title = Label(self, text = "CURRENCY CONVERTER", font = ('Comfortaa', 10, 'bold'), background = '#1C1C1C', foreground = '#F2EDE7',) #A62906
         self.title.grid(row = 0, rowspan = 2, column = 0, columnspan = 2)
 
 class InputFrame(Frame):
     def __init__(self, parent, bg, base_url, api_key, all_currencies):
-        super().__init__(parent, height = 144, width = 200, bg = bg)
+        super().__init__(parent, height = 146, width = 200, bg = bg)
 
         # initialize api values
         self.base_url = base_url
@@ -68,14 +68,23 @@ class InputFrame(Frame):
         self.to_currency = StringVar() 
 
         # layout configuration
-        for i in range(3):
-            self.rowconfigure(i, weight = 1)
-            self.columnconfigure(i, weight = 1)
+        # rows
+        # for i in range(3):
+        #     self.rowconfigure(i, weight = 1)
+        #     # self.columnconfigure(i, weight = 1)
+        self.rowconfigure(0, weight = 1)
+        self.rowconfigure(1, weight = 0)
+        self.rowconfigure(2, weight = 1)
+        
+        # columns
+        self.columnconfigure(0, weight = 1)
+        self.columnconfigure(1, weight = 0)
+        self.columnconfigure(2, weight = 1)
         
         self.grid_propagate(False)
 
         # input frame bg
-        self.input_bg = PhotoImage(file="assets/conversion_frame.png")
+        self.input_bg = PhotoImage(file="assets/conversion_frame_1.png")
         input_bg_label = Label(self, image = self.input_bg)
         input_bg_label.place(x = 0, y = 0, relwidth = 1, relheight = 1)
         input_bg_label.lower()
@@ -84,7 +93,7 @@ class InputFrame(Frame):
         combostyle = ttk.Style()
         combostyle.theme_use('clam')
         combostyle.configure("TCombobox",
-                             fieldbackground = '#F2EDE7',
+                             fieldbackground = '#C44010',
                              background = '#C44010',
                              foreground = '#0a0a0a',
                              bordercolor = '#C44010',
@@ -96,7 +105,7 @@ class InputFrame(Frame):
         vcmd = (self.register(self.callback))
 
         self.amount = Entry(self, font = ('Helvetica', 12), bg = "#F2EDE7", relief = FLAT, width = 30, validate = 'all', validatecommand = (vcmd, '%P'))
-        self.amount.grid(row = 0, column = 0, columnspan = 3)
+        self.amount.grid(row = 0, column = 0, columnspan = 3, pady = (10, 0))
     
         #comboboxes
         # FROM
@@ -105,6 +114,11 @@ class InputFrame(Frame):
 
         from_currency_cmb = ttk.Combobox(self, values = from_currencies, font = ('Helvetica', 12), textvariable = self.from_currency, state = 'readonly')
         from_currency_cmb.grid(row = 1, column = 0, sticky = E)
+
+        self.cnv_img = PhotoImage(file = "assets/conversion_symbol.png")
+        cnv = Label(self, image = self.cnv_img, bg = '#BDB6AC')
+        cnv.grid(row = 1, column = 1)
+        
         to_currency_cmb = ttk.Combobox(self, values = to_currencies, font = ('Helvetica', 12), textvariable = self.to_currency, state = 'readonly')
         to_currency_cmb.grid(row = 1, column = 2, sticky = W)
 
@@ -113,11 +127,11 @@ class InputFrame(Frame):
         self.convert_button_bg = PhotoImage(file = "assets/convert_button.png")
         convert_btn = Button(self, text = "CONVERT", image = self.convert_button_bg, foreground = '#BAB3A9', background = '#BAB3A9', relief = FLAT, command = self.get_amount)
         # command = self.convert_currency
-        convert_btn.grid(row = 2, column = 0, columnspan = 3, sticky = EW, padx = 15)
+        convert_btn.grid(row = 2, column = 0, columnspan = 3, sticky = EW, padx = 15, pady = (0, 15))
 
         for widget in self.winfo_children():
-            if widget != input_bg_label:
-                widget.grid(padx = 15, pady = 5)
+            if widget != input_bg_label and widget != cnv:
+                widget.grid(padx = 15)
 
     # methods
     # validate entry input if it is a number or not
@@ -210,7 +224,7 @@ class OutputFrame(Frame):
         self.grid_propagate(False)
 
         # output frame
-        self.output_bg = PhotoImage(file = "assets/display_frame.png")
+        self.output_bg = PhotoImage(file = "assets/display_frame_2.png")
         output_bg_label = Label(self, image = self.output_bg)
         output_bg_label.place(x = 0, y = 0, relwidth = 1, relheight = 1)
         output_bg_label.lower()
