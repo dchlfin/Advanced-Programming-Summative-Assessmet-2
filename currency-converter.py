@@ -151,8 +151,7 @@ class InputFrame(Frame):
                 return fallback_list
     
     def convert_currency(self, amount):
-        amount = float(amount)
-        
+        amount = float(amount) 
 
         from_currency = self.from_currency.get()
         to_currency = self.to_currency.get()
@@ -170,10 +169,9 @@ class InputFrame(Frame):
                 self.converted_amount = round(amount * rate, 2)
                 # print(converted_amount)
                 self.symbol = self.currencies_data["data"][to_currency]["symbol"]
-
-                self.master.output_frame.output_display(self.converted_amount, self.symbol)
+                self.eu = self.currencies[to_currency]["EU"]
+                self.master.output_frame.output_display(self.converted_amount, self.symbol, self.eu)
                 
-
             else:
                 print("Currency not found in response.")
                 return None
@@ -198,11 +196,16 @@ class OutputFrame(Frame):
         self.converted_amount = Label(self, text = "", font = ('Helvetica', 12), foreground = '#0a0a0a', background = '#F2EDE7')
         self.converted_amount.grid(row = 0, column = 0, columnspan = 2, padx = 15, pady = 5, sticky = EW)
     
-    def output_display(self, output, symbol):
+    def output_display(self, output, symbol, eu):
         output = output
         symbol = symbol
+        eu = eu
 
-        self.converted_amount.config(text = f"{symbol}{output}")
+        # if the target currency belongs to an EU state
+        if eu == True:
+            self.converted_amount.config(text = f"{output} {symbol}")
+        else:
+            self.converted_amount.config(text = f"{symbol}{output}")
 
 if __name__ == "__main__":
     load_dotenv()
