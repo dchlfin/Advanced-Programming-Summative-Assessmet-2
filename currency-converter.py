@@ -73,6 +73,10 @@ class InputFrame(Frame):
         self.from_currency = StringVar()
         self.to_currency = StringVar() 
 
+        # track previous combobox values
+        self.prev_from = ''
+        self.prev_to = '' 
+
         # layout configuration
         # rows
         self.rowconfigure(0, weight = 1)
@@ -123,6 +127,10 @@ class InputFrame(Frame):
         
         to_currency_cmb = ttk.Combobox(self, values = to_currencies, font = ('Helvetica', 12), textvariable = self.to_currency, state = 'readonly')
         to_currency_cmb.grid(row = 1, column = 2, sticky = W)
+
+        # track combobox clicks
+        from_currency_cmb.bind('<<ComboboxSelected>>', lambda e: self.swap_currencies('from'))
+        to_currency_cmb.bind('<<ComboboxSelected>>', lambda e: self.swap_currencies('to'))
 
         # convert button
         self.convert_button_bg = PhotoImage(file = "assets/convert_button.png")
@@ -209,6 +217,19 @@ class InputFrame(Frame):
         else:
             print("API request failed")
             return None
+        
+    def swap_currencies(self, changed):
+        from_val = self.from_currency.get()
+        to_val = self.to_currency.get()
+
+        if from_val == to_val:
+            if changed == 'from':
+                self.to_currency.set(self.prev_from)
+            else:
+                self.from_currency.set(self.prev_to)
+        
+        self.prev_from = self.from_currency.get()
+        self.prev_to = self.to_currency.get()
 
 class OutputFrame(Frame):
     def __init__(self, parent, bg):
