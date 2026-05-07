@@ -199,39 +199,69 @@ class InputFrame(Frame):
     def convert_currency(self, amount):
         amount = float(amount) 
 
-        # from_currency = self.from_currency.get()
-        # to_currency = self.to_currency.get()
+        # from_currency = ""
+        # to_currency = ""
+        from_currency = self.from_currency.get()
+        to_currency = self.to_currency.get()
 
-        if self.from_currency.get() == "" and self.to_currency.get() == "":
-            messagebox.showerror("Error", "No base currency selected. Try again.")
-        elif self.to_currency.get() == "":
-            messagebox.showerror("Error", "No target currency selected. Try again.")
-        elif self.from_currency.get() == "":
+        # if self.from_currency.get() == "" and self.to_currency.get() == "":
+        #     messagebox.showerror("Error", "No base currency selected. Try again.")
+        # elif self.to_currency.get() == "":
+        #     messagebox.showerror("Error", "No target currency selected. Try again.")
+        # elif self.from_currency.get() == "":
+        #     messagebox.showerror("Error", "No currency selected. Try again.")
+        # else: 
+        #     self.from_c = self.from_c.get() 
+        #     self.to_c = self.to_currency.get()
+
+        if from_currency == "" and to_currency == "":
             messagebox.showerror("Error", "No currency selected. Try again.")
+        elif from_currency == "":
+            messagebox.showerror("Error", "No base currency selected. Try again.")
+        elif to_currency == "":
+            messagebox.showerror("Error", "No target currency selected. Try again.")
         else: 
-            self.from_c = self.from_c.get() 
-            self.to_c = self.to_currency.get()
-        
-        url = f"{self.base_url}latest?apikey={self.api_key}&currencies={self.to_c}&base_currency={self.from_c}"
+            url = f"{self.base_url}latest?apikey={self.api_key}&currencies={to_currency}&base_currency={from_currency}"
 
-        response = requests.get(url)
+            response = requests.get(url)
 
-        if response.status_code == 200:
-            data = response.json()
+            if response.status_code == 200:
+                data = response.json()
 
-            if "data" in data and self.to_c in data["data"]:
-                rate = data["data"][self.to_c]
-                self.converted_amount = round(amount * rate, 2)
-                self.symbol = self.currencies_data["data"][self.to_c]["symbol"]
-                self.eu = self.currencies[self.to_c]["EU"]
-                self.master.output_frame.output_display(self.converted_amount, self.symbol, self.eu)
-                
+                if "data" in data and to_currency in data["data"]:
+                    rate = data["data"][to_currency]
+                    self.converted_amount = round(amount * rate, 2)
+                    self.symbol = self.currencies_data["data"][to_currency]["symbol"]
+                    self.eu = self.currencies[to_currency]["EU"]
+                    self.master.output_frame.output_display(self.converted_amount, self.symbol, self.eu)
+                    
+                else:
+                    print("Currency not found in response.")
+                    return None
             else:
-                print("Currency not found in response.")
+                print("API request failed")
                 return None
-        else:
-            print("API request failed")
-            return None
+        
+        # url = f"{self.base_url}latest?apikey={self.api_key}&currencies={self.to_currency}&base_currency={self.from_currency}"
+
+        # response = requests.get(url)
+
+        # if response.status_code == 200:
+        #     data = response.json()
+
+        #     if "data" in data and to_currency in data["data"]:
+        #         rate = data["data"][to_currency]
+        #         self.converted_amount = round(amount * rate, 2)
+        #         self.symbol = self.currencies_data["data"][to_currency]["symbol"]
+        #         self.eu = self.currencies[self.to_currency]["EU"]
+        #         self.master.output_frame.output_display(self.converted_amount, self.symbol, self.eu)
+                
+        #     else:
+        #         print("Currency not found in response.")
+        #         return None
+        # else:
+        #     print("API request failed")
+        #     return None
         
     def swap_currencies(self, changed):
         from_val = self.from_currency.get()
