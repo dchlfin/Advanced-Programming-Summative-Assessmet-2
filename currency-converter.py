@@ -153,6 +153,10 @@ class InputFrame(Frame):
         amount = self.amount.get()
 
         # return nothing if entry is empty, return amount otherwise
+        # if amount == "":
+        #     self.convert_currency(amount)
+        # else:
+        #     messagebox.showerror("Error", "Invalid Input. Try again.")
         messagebox.showerror("Error", "Invalid Input. Try again.") if amount == "" else self.convert_currency(amount)
     
     def supported_currencies(self):
@@ -195,21 +199,31 @@ class InputFrame(Frame):
     def convert_currency(self, amount):
         amount = float(amount) 
 
-        from_currency = self.from_currency.get()
-        to_currency = self.to_currency.get()
+        # from_currency = self.from_currency.get()
+        # to_currency = self.to_currency.get()
 
-        url = f"{self.base_url}latest?apikey={self.api_key}&currencies={to_currency}&base_currency={from_currency}"
+        if self.from_currency.get() == "" and self.to_currency.get() == "":
+            messagebox.showerror("Error", "No base currency selected. Try again.")
+        elif self.to_currency.get() == "":
+            messagebox.showerror("Error", "No target currency selected. Try again.")
+        elif self.from_currency.get() == "":
+            messagebox.showerror("Error", "No currency selected. Try again.")
+        else: 
+            self.from_c = self.from_c.get() 
+            self.to_c = self.to_currency.get()
+        
+        url = f"{self.base_url}latest?apikey={self.api_key}&currencies={self.to_c}&base_currency={self.from_c}"
 
         response = requests.get(url)
 
         if response.status_code == 200:
             data = response.json()
 
-            if "data" in data and to_currency in data["data"]:
-                rate = data["data"][to_currency]
+            if "data" in data and self.to_c in data["data"]:
+                rate = data["data"][self.to_c]
                 self.converted_amount = round(amount * rate, 2)
-                self.symbol = self.currencies_data["data"][to_currency]["symbol"]
-                self.eu = self.currencies[to_currency]["EU"]
+                self.symbol = self.currencies_data["data"][self.to_c]["symbol"]
+                self.eu = self.currencies[self.to_c]["EU"]
                 self.master.output_frame.output_display(self.converted_amount, self.symbol, self.eu)
                 
             else:
