@@ -153,7 +153,7 @@ class InputFrame(Frame):
         amount = self.amount.get()
 
         # return nothing if entry is empty, return amount otherwise
-        messagebox.showinfo("Error", "Invalid Input. Try again.") if amount == "" else self.convert_currency(amount)
+        messagebox.showerror("Error", "Invalid Input. Try again.") if amount == "" else self.convert_currency(amount)
     
     def supported_currencies(self):
         # form request url
