@@ -152,18 +152,13 @@ class InputFrame(Frame):
     def get_amount(self):
         amount = self.amount.get()
 
-        # return nothing if entry is empty, return amount otherwise
-        # if amount == "":
-        #     self.convert_currency(amount)
-        # else:
-        #     messagebox.showerror("Error", "Invalid Input. Try again.")
         messagebox.showerror("Error", "Invalid Input. Try again.") if amount == "" else self.convert_currency(amount)
     
     def supported_currencies(self):
         # form request url
         url = f"{self.base_url}currencies?apikey={self.api_key}"
 
-        # assign the raw data as the api 'response'
+        # send GET request to API host
         response = requests.get(url)
 
         # if the request is succesful
@@ -181,6 +176,7 @@ class InputFrame(Frame):
                 # gathers each currency keycode into a list
                 currencies_keys = list(self.currencies.keys())
 
+                # indicates which state is a EU state for output display
                 currencies_eu = ['EUR', 'BGN', 'CZK', 'DKK', 'HUF', 'PLN', 'RON', 'SEK']
                 for i in currencies_keys:
                     if i in currencies_eu:
@@ -197,11 +193,14 @@ class InputFrame(Frame):
                 return fallback_list
     
     def convert_currency(self, amount):
+        # receives return value from the get_amount() method
         amount = float(amount) 
 
+        # extracts the user input from the base and target currency dropdowns
         from_currency = self.from_currency.get()
         to_currency = self.to_currency.get()
 
+        # if any of the inputs are empty, trigger an error msg 
         if from_currency == "" and to_currency == "":
             messagebox.showerror("Error", "No currency selected. Try again.")
         elif from_currency == "":
@@ -209,18 +208,33 @@ class InputFrame(Frame):
         elif to_currency == "":
             messagebox.showerror("Error", "No target currency selected. Try again.")
         else: 
+            # form the request url 
             url = f"{self.base_url}latest?apikey={self.api_key}&currencies={to_currency}&base_currency={from_currency}"
 
+            # send GET request to API host
             response = requests.get(url)
-
+            
+            # if response is successful
             if response.status_code == 200:
+                # parse the response into a dict
                 data = response.json()
 
+                # if dict has key "data" and the target currency is a key in the "data" dict
                 if "data" in data and to_currency in data["data"]:
+
+                    # access the target currency exchange rate
                     rate = data["data"][to_currency]
+
+                    # calculate for the converted amount
                     self.converted_amount = round(amount * rate, 2)
+
+                    # access the target currency symbol for output display
                     self.symbol = self.currencies_data["data"][to_currency]["symbol"]
+
+                    # access the EU key-value for output display
                     self.eu = self.currencies[to_currency]["EU"]
+
+                    # return the amount, symbol, and EU value to the output frame
                     self.master.output_frame.output_display(self.converted_amount, self.symbol, self.eu)
                     
                 else:
@@ -229,7 +243,8 @@ class InputFrame(Frame):
             else:
                 print("API request failed")
                 return None
-        
+    
+    # switch the conversion direction
     def swap_currencies(self, changed):
         from_val = self.from_currency.get()
         to_val = self.to_currency.get()
