@@ -36,8 +36,6 @@ class CurrencyConverter(Tk):
         self.title_label.grid(row = 0, sticky = NSEW)
         self.input_frame = InputFrame(self, "#BDB6AC", self.base_url, self.api_key, self.all_currencies)
         self.input_frame.grid(row = 1, pady = (22, 15))
-        # self.input_frame = InputFrame(self)
-        # self.input_frame.grid(row = 0, sticky = EW, pady = (0,5))
         self.output_frame = OutputFrame(self, "#DEDACF")
         self.output_frame.grid(row = 2, pady = (0, 4))
 
