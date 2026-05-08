@@ -212,7 +212,7 @@ class InputFrame(Frame):
             # send GET request to API host
             response = requests.get(url)
             
-            # if response is successful
+            # if request is successful
             if response.status_code == 200:
                 # parse the response into a dict
                 data = response.json()
